@@ -27,7 +27,7 @@ func speechHandler(vc *discordgo.VoiceConnection, vs *discordgo.VoiceSpeakingUpd
 }
 
 func textCommandHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if strings.HasPrefix(m.Message.Content[0], "$") {
+	if strings.HasPrefix(m.Message.Content, "$") {
 		separatedContent := strings.SplitN(m.Message.Content, " ", 3)
 
 		switch command := separatedContent[0]; command {
