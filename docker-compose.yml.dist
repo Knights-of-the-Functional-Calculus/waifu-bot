@@ -1,0 +1,19 @@
+version: '2'
+services:
+  waifu-bot:  
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DISCORD_TOKEN=
+      - DISCORD_GUILDID=
+      - DISCORD_CHANNELID=
+      - DISCORD_EMAIL=
+      - DISCORD_PASSWORD=
+      - WIT_AI_TOKEN_EN=
+      - WIT_AI_TOKEN_JP=
+      - DISCORD_MASTER_ID=
+      - GIT_REPO=
+      - DEBUG=
+    volumes:
+      - ./src:/go/src/app
