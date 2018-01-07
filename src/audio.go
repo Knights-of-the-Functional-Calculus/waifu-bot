@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"layeh.com/gopus"
 	"log"
@@ -16,9 +17,8 @@ const (
 )
 
 var (
-	speakers  map[uint32]*gopus.Decoder
-	dataBuff  = &bytes.Buffer{}
-	listening = false
+	speakers map[uint32]*gopus.Decoder
+	dataBuff = &bytes.Buffer{}
 )
 
 func printVoiceConnections(session *discordgo.Session) {
@@ -33,10 +33,7 @@ func recordRawAudioToFile(v *discordgo.VoiceConnection) {
 	recv := make(chan *discordgo.Packet, 2)
 	go decode(v, recv)
 
-	var outFile bytes.Buffer
-	outFile.WriteString(v.UserID)
-	outFile.WriteString(".raw")
-	f, err := os.Create(outFile.String())
+	f, err := os.Create(fmt.Sprintf("%s.raw", v.UserID))
 	if err != nil {
 		log.Panic(err)
 	}
@@ -58,12 +55,15 @@ func prepRawAudioForWitAPI(v *discordgo.VoiceConnection) {
 	go decode(v, recv)
 
 	for {
+		if !v.Ready {
+			return
+		}
 		buf, _ := getMonoFromDGPacket(recv)
 		dataBuff.Write(buf)
 
-		if dataBuff.Len() > 0 && !listening {
+		if dataBuff.Len() > 0 {
 			if dataBuff.Len() >= minimumSendSize {
-				go sendRequestToWitAPI(dataBuff.Bytes(), witAITokenMap[locale]) //, respBody)
+				go sendAudioToWitAPI(dataBuff.Bytes(), witAITokenMap[locale]) //, respBody)
 			}
 			dataBuff.Reset()
 		}
@@ -124,8 +124,7 @@ func decode(v *discordgo.VoiceConnection, c chan *discordgo.Packet) {
 	}
 
 	for {
-
-		if v.Ready == false || v.OpusRecv == nil {
+		if !v.Ready || v.OpusRecv == nil {
 			log.Println("Discordgo not to receive opus packets. %+v : %+v", v.Ready, v.OpusSend)
 			return
 		}

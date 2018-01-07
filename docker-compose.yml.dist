@@ -6,10 +6,10 @@ services:
       dockerfile: Dockerfile
     environment:
       - DISCORD_TOKEN=
-      - DISCORD_GUILDID=
-      - DISCORD_CHANNELID=
       - DISCORD_EMAIL=
       - DISCORD_PASSWORD=
+      - WIT_AI_TEXT_URI=https://api.wit.ai/message?v=20180107&q=
+      - WIT_AI_SPEECH_URI=https://api.wit.ai/speech?v=20170307
       - WIT_AI_TOKEN_EN=
       - WIT_AI_TOKEN_JP=
       - DISCORD_MASTER_ID=
