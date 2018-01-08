@@ -90,7 +90,7 @@ func textCommandHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			go sendTargetedMessage(s, msg.Author, msg.ChannelID, gitUri)
 		default:
 		}
-	} else if reading && msg.ChannelID == currentReadingChannel && msg.Author !=  {
+	} else if reading && msg.ChannelID == currentReadingChannel {
 		go sendTextToWitAPI(msg.Content, witAITokenMap[locale])
 	}
 }
