@@ -2,10 +2,16 @@ package main
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/jinzhongmin/gtra"
-	"log"
 )
+
+func errorLog(err error) string {
+	log.Panicln(err)
+	return "Failed"
+}
 
 func sendTargetedMessage(s *discordgo.Session, user *discordgo.User, strParams ...string) {
 	content := fmt.Sprintf("%s %s", user.Mention(), strParams[1])
@@ -17,11 +23,8 @@ func sendTargetedMessage(s *discordgo.Session, user *discordgo.User, strParams .
 }
 
 func translate(s *discordgo.Session, user *discordgo.User, strParams ...string) {
-	t := gtra.New(strParams[2])
-	res, err := t.To(strParams[1])
-	if err != nil {
-		log.Panicln(err)
-	}
+	t := gtra.New()
+	res := t.To(strParams[1], errorLog)
 	sendTargetedMessage(s, user, strParams[0], res)
 }
 
@@ -36,7 +39,8 @@ func grabVoiceState(s *discordgo.Session, user *discordgo.User, channelID string
 	}
 	userID := user.ID
 	for _, vs := range guild.VoiceStates {
-		if vs.UserID != userID {
+		log.Printf("%+v\n", vs)
+		if vs.UserID == userID {
 			return vs
 		}
 	}

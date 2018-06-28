@@ -3,14 +3,15 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
-	"layeh.com/gopus"
 	"log"
 	"os"
+
+	"github.com/bwmarrin/discordgo"
+	"layeh.com/gopus"
 )
 
 const (
-	in_channels     int = 2
+	inChannels      int = 2
 	sampleRate      int = 16000
 	sampleSize      int = 320
 	minimumSendSize int = 5120
@@ -78,7 +79,7 @@ func getMonoFromDGPacket(recv chan *discordgo.Packet) ([]byte, int) {
 
 	//log.Println("Buffering...")
 
-	buf := make([]byte, sampleSize*in_channels)
+	buf := make([]byte, sampleSize*inChannels)
 
 	i := 0
 	for ; i < len(p.PCM); i++ {
@@ -125,7 +126,7 @@ func decode(v *discordgo.VoiceConnection, c chan *discordgo.Packet) {
 
 	for {
 		if !v.Ready || v.OpusRecv == nil {
-			log.Println("Discordgo not to receive opus packets. %+v : %+v", v.Ready, v.OpusSend)
+			log.Printf("Discordgo not to receive opus packets. %+v : %+v\n", v.Ready, v.OpusSend)
 			return
 		}
 
@@ -140,7 +141,7 @@ func decode(v *discordgo.VoiceConnection, c chan *discordgo.Packet) {
 
 		_, ok = speakers[p.SSRC]
 		if !ok {
-			speakers[p.SSRC], err = gopus.NewDecoder(sampleRate, in_channels)
+			speakers[p.SSRC], err = gopus.NewDecoder(sampleRate, inChannels)
 			if err != nil {
 				log.Panicln("error creating opus decoder", err)
 				continue

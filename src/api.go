@@ -11,7 +11,7 @@ import (
 
 func sendAudioToWitAPI(buffer []byte, speechAPIToken string) {
 	reader := bytes.NewReader(buffer)
-	req, err := http.NewRequest("POST", witSpeechUri, reader)
+	req, err := http.NewRequest("POST", witSpeechURI, reader)
 	if err != nil {
 		log.Panicln("Request could not be built", err)
 	}
@@ -32,7 +32,7 @@ func sendAudioToWitAPI(buffer []byte, speechAPIToken string) {
 }
 
 func sendTextToWitAPI(message, speechAPIToken string) {
-	uri := fmt.Sprintf("%s%s", witTextUri, url.QueryEscape(message))
+	uri := fmt.Sprintf("%s%s", witTextURI, url.QueryEscape(message))
 	req, err := http.NewRequest("GET", uri, nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", speechAPIToken))
 	resp, err := http.DefaultClient.Do(req)

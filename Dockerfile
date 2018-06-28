@@ -7,6 +7,8 @@ WORKDIR /go/src/app
 VOLUME /go/src/app
 
 RUN apk add --update --no-cache gcc && \
-	apk add --update --no-cache g++ && \
-	go-wrapper download && go-wrapper install
-CMD ["go-wrapper", "run"]
+	apk add --update --no-cache g++
+
+RUN go get -d -v ./... && go install -v ./... && go build
+
+CMD ["app"]

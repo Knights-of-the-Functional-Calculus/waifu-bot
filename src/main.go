@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"log"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 var (
@@ -15,12 +16,12 @@ var (
 		"en": os.Getenv("WIT_AI_TOKEN_EN"),
 		"ja": os.Getenv("WIT_AI_TOKEN_JA"),
 	}
-	witTextUri   = os.Getenv("WIT_AI_TEXT_URI")
-	witSpeechUri = os.Getenv("WIT_AI_SPEECH_URI")
+	witTextURI   = os.Getenv("WIT_AI_TEXT_URI")
+	witSpeechURI = os.Getenv("WIT_AI_SPEECH_URI")
 	locale       = "en"
 	debug, _     = strconv.ParseBool(os.Getenv("DEBUG"))
 	master       = os.Getenv("DISCORD_MASTER_ID")
-	gitUri       = os.Getenv("GIT_REPO_URI")
+	gitURI       = os.Getenv("GIT_REPO_URI")
 	startTime    = time.Now()
 )
 

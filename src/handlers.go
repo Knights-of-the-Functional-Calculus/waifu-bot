@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"log"
 	"strings"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 var (
@@ -87,7 +88,7 @@ func textCommandHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 		case "$nsfw":
 		case "$git":
-			go sendTargetedMessage(s, msg.Author, msg.ChannelID, gitUri)
+			go sendTargetedMessage(s, msg.Author, msg.ChannelID, gitURI)
 		default:
 		}
 	} else if reading && msg.ChannelID == currentReadingChannel {
