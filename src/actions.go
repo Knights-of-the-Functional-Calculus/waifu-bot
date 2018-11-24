@@ -55,7 +55,7 @@ func readAudio(s *discordgo.Session, vs *discordgo.VoiceState) {
 	if debug {
 		recordRawAudioToFile(dgv)
 	} else {
-		log.Println("Using Speech API Token: ", witAITokenMap[locale])
+		log.Println("Speech API Token: ", witAITokenMap[locale])
 		prepRawAudioForWitAPI(dgv)
 	}
 }
